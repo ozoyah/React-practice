@@ -1,24 +1,28 @@
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import Axios from "axios";
+import useGetCat from "../useGetCat";
 
 const Homes = () => {
-  const { data, isLoading, refetch } = useQuery({
+  const { data, refetch, isLoading } = useQuery({
     queryKey: ["cat"],
     queryFn: async () => {
-      return Axios.get("https://catfact.ninja/fact").then((res) => res.data);
+      const res = await Axios.get("https://catfact.ninja/fact");
+      return res.data;
     },
   });
 
-  if (isLoading) {
-    return <h1>Loading.... </h1>;
-  }
+  if (isLoading) return <h1>Loading...</h1>;
+  const refetchData = () => {
+    refetch();
+    console.log("data refetched");
+  };
 
   return (
     <>
       <h1>Welcome to Home.</h1>
       <p>{data?.fact}</p>
-      <button onClick={refetch}>Update fact</button>
+      <button onClick={refetchData}>Update fact</button>
     </>
   );
 };
