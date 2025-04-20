@@ -1,5 +1,5 @@
 import React from "react";
-import { useFormik } from "formik";
+import { Formik, useFormik } from "formik";
 import { z } from "zod";
 import { withZodSchema } from "formik-validator-zod";
 
@@ -12,23 +12,22 @@ const Signup = () => {
       password: "",
     },
 
+    withZodSchema: z.object({
+      email: z.string().email(),
+      firstName: z.string().nonempty({ message: "Enter your first name" }),
+      lastName: z.string().nonempty({ message: "Enter your first name" }),
+      password: z.string().min(8, { message: "Password must be at least" }),
+    }),
+
     onSubmit: (values) => {
       console.log(values);
     },
   });
 
-  const schema = z.object({
-    firstName: z.string.firstName.nonempty({ message: "Enter first Name" }),
-    lastName: z.string.lastName.nonempty({ message: "Enter Last Name" }),
-    email: z.string().email.nonempty({ message: "Invalid email" }),
-    password: z.string.password
-      .min(5, { message: "must be 5 characters or longer" })
-      .nonempty({ message: "Enter password" }),
-  });
   return (
     <div>
       <h1>Signup Here</h1>
-      <form validate={withZodSchema(schema)} onSubmit={formik.handleSubmit}>
+      <form onSubmit={formik.handleSubmit}>
         <label htmlFor="email">Email Address</label>
         <input
           id="email"
