@@ -23,7 +23,7 @@ const Login = () => {
       <button onClick={() => dispatch(login({ username: newUserName }))}>
         submit Login
       </button>
-      <button>Logout</button>
+      <button onClick={() => dispatch(logout())}>Logout</button>
     </div>
   );
 };
