@@ -5,13 +5,13 @@ import About from "./pages/About";
 import Navbar from "./components/Navbar";
 import { useState, createContext } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import NewsletterForm from "./pages/NewsletterForm";
-import Signup from "./pages/Signup";
+import { Provider } from "react-redux";
+import { store } from "./store";
+import Login from "./pages/login";
 
 export const AppContext = createContext();
 
 function App() {
-  const [username, setUserName] = useState("");
   const client = new QueryClient({
     defaultOptions: {
       queries: {
@@ -22,17 +22,18 @@ function App() {
   return (
     <>
       <div className="App">
-        <QueryClientProvider client={client}>
-          <Router>
-            <Navbar />
-            <Routes>
-              <Route path="/" element={<Homes />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/signup" element={<Signup />} />
-              <Route path="/newsletter" element={<NewsletterForm />} />
-            </Routes>
-          </Router>
-        </QueryClientProvider>
+        <Provider store={store}>
+          <QueryClientProvider client={client}>
+            <Router>
+              <Navbar />
+              <Routes>
+                <Route path="/" element={<Homes />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/login" element={<Login />} />
+              </Routes>
+            </Router>
+          </QueryClientProvider>
+        </Provider>
       </div>
     </>
   );
